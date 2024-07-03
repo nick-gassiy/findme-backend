@@ -38,12 +38,12 @@ class ApiResponse implements Responsable
         );
     }
 
-    public static function ok(array $data)
+    public static function ok(array $data = [])
     {
         return new static(200, $data);
     }
 
-    public static function created(array $data)
+    public static function created(array $data = [])
     {
         return new static(201, $data);
     }
@@ -51,5 +51,11 @@ class ApiResponse implements Responsable
     public static function notFound(string $errorMessage = "Item not found")
     {
         return new static(404, errorMessage: $errorMessage);
+    }
+
+
+    public static function error(string $errorMessage = "Internal Server Error")
+    {
+        return new static(500, errorMessage: $errorMessage);
     }
 }
