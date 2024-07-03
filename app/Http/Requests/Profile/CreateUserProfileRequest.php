@@ -1,17 +1,18 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Profile;
 
+use App\Rules\AdultValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegistrationRequest extends FormRequest
+class CreateUserProfileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return auth()->check();
     }
 
     /**
@@ -22,9 +23,10 @@ class RegistrationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => ['required', 'max:16','unique:users'],
-            'email' => ['required', 'email', 'unique:users'],
-            'password' => ['required','confirmed','min:8'],
+            'first_name' => ['required', 'max:16'],
+            'last_name' => ['required', 'max:16'],
+            'bio' => ['string', 'max:255'],
+            'date_of_birth' => ['required', 'date', new AdultValidationRule],
         ];
     }
 }

@@ -12,7 +12,7 @@ class AuthService
     {
         try {
             User::query()->create([
-                'name' => $data['name'],
+                'username' => $data['username'],
                 'email' => $data['email'],
                 'password' => Hash::make($data['password'])
             ]);
