@@ -8,25 +8,20 @@ use Illuminate\Support\Facades\Hash;
 class AuthService
 {
 
-    public function register(array $data): bool
+    public function register(array $data): void
     {
-        try {
-            User::query()->create([
-                'username' => $data['username'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password'])
-            ]);
-            return true;
-        }catch (\Exception $exception){
-            return false;
-        }
+        User::query()->create([
+            'username' => $data['username'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password'])
+        ]);
     }
 
-    public function authenticate(array $data)
+    public function authenticate(array $data): ?string
     {
         $user = User::query()->where('email', $data['email'])->first();
         if (!$user || !Hash::check($data['password'], $user->password)){
-            return null;
+            throw new \Exception();
         }
         return $user->createToken('authenticationToken')->plainTextToken;
     }

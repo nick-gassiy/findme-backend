@@ -19,21 +19,28 @@ class AuthController extends Controller
 
     public function register(RegistrationRequest $request)
     {
-        if ($this->authService->register($request->toArray())){
+        try {
+            $this->authService->register($request->toArray());
             $token = $this->authService->authenticate($request->toArray());
             return ApiResponse::ok([
                 'token' => $token
             ]);
+        }catch (\Exception $exception){
+            return ApiResponse::error();
         }
-        return new ApiResponse(Response::HTTP_INTERNAL_SERVER_ERROR);
+
     }
 
     public function login(AuthorizationRequest $request)
     {
-        $token = $this->authService->authenticate($request->toArray());
-        return ApiResponse::ok([
-            'token' => $token
-        ]);
+        try {
+            $token = $this->authService->authenticate($request->toArray());
+            return ApiResponse::ok([
+                'token' => $token
+            ]);
+        }catch (\Exception $exception){
+            return ApiResponse::error();
+        }
     }
 
     public function logout(Request $request)
