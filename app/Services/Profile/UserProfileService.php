@@ -31,7 +31,7 @@ class UserProfileService implements ProfileService
             return true;
         }catch (\Exception $exception){
             DB::rollBack();
-            return false;
+            throw $exception;
         }
     }
 
